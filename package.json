@@ -10,6 +10,6 @@
     "name": "ratticURL",
     "title": "RatticDB Server URL",
     "type": "string",
-    "value": "https://demo.rattic.org/"
+    "value": "http://localhost:8000/"
   }]
 }
