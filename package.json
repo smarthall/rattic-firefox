@@ -3,7 +3,13 @@
   "title": "FFRattic",
   "id": "jid1-K4bu3en83bz8YQ",
   "description": "a basic add-on",
-  "author": "",
+  "author": "Daniel Hall",
   "license": "MPL 2.0",
-  "version": "0.1"
+  "version": "0.1",
+  "preferences": [{
+    "name": "ratticURL",
+    "title": "RatticDB Server URL",
+    "type": "string",
+    "value": "https://demo.rattic.org/"
+  }]
 }
