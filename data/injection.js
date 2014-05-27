@@ -1,6 +1,8 @@
 // This script gets injected into each page that RatticDB
 // recognises.
 
+var port = self.port;
+
 function findPasswordBoxes() {
     var pwdinput = [];
     var inputs = document.getElementsByTagName("INPUT");
@@ -13,23 +15,41 @@ function findPasswordBoxes() {
     return pwdinput;
 }
 
-document.body.style.border = "5px solid red";
+function findUsernameBox(passwordBox) {
+    current = passwordBox.previousSibling;
+    while (current) {
+        if (current.name = "INPUT" && current.type == "text") {
+            return current;
+        }
+
+        current = current.previousSibling;
+    }
+
+    return null;
+}
+
+document.body.style.border = "5px solid green";
 var boxes = findPasswordBoxes();
 for (var x = 0; x < boxes.length; x++) {
     var input = boxes[x],
         nparent = input.parentElement,
-        link = document.createElement('span');
+        link = document.createElement('span'),
+        ubox = findUsernameBox(input);
 
     // Build our link
     link.innerHTML = "Rattic";
     link.addEventListener("click", _ratticFillClick);
 
     // Inject the link
-    input.style.border="5px solid red";
     nparent.insertBefore(link, input.nextSibling);
+
+    // Apply debug highlighting
+    input.style.border="5px solid red";
+    ubox.style.border="5px solid blue"
 }
 
 function _ratticFillClick() {
-    alert("Clicked!");
+    port.emit("filldata", "test");
+    alert('Click');
 }
 
