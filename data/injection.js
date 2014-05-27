@@ -2,6 +2,7 @@
 // recognises.
 
 var port = self.port;
+var cred_uri = undefined;
 
 function findPasswordBoxes() {
     var pwdinput = [];
@@ -45,11 +46,15 @@ for (var x = 0; x < boxes.length; x++) {
 
     // Apply debug highlighting
     input.style.border="5px solid red";
-    ubox.style.border="5px solid blue"
+    ubox.style.border="5px solid blue";
 }
 
 function _ratticFillClick() {
     port.emit("filldata", "test");
-    alert('Click');
 }
+
+port.on("credid", function(uri) {
+    cred_uri = uri;
+    alert(cred_uri);
+});
 
