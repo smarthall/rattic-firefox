@@ -50,11 +50,20 @@ for (var x = 0; x < boxes.length; x++) {
 }
 
 function _ratticFillClick() {
-    port.emit("filldata", "test");
+    port.emit("filldata", cred_uri);
 }
 
-port.on("credid", function(uri) {
+port.on("creduri", function(uri) {
     cred_uri = uri;
-    alert(cred_uri);
+});
+
+port.on("filldata", function(creds){
+  for (var x = 0; x < boxes.length; x++) {
+    var pbox = boxes[x],
+        ubox = findUsernameBox(input);
+
+    pbox.value = creds.password;
+    ubox.value = creds.username;
+  }
 });
 

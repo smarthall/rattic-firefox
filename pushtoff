@@ -1,8 +1,5 @@
 #!/bin/bash
 
-while /bin/true; do
-  cfx xpi
-  wget --post-file=ffrattic.xpi http://127.0.0.1:8888/
-  sleep 20
-done
+cfx xpi
+wget --post-file=ffrattic.xpi http://127.0.0.1:8888/
 
