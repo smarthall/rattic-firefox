@@ -33,14 +33,32 @@ function findUsernameBox(passwordBox) {
     return null;
 }
 
+function getPasswordForms() {
+    var boxlist = [];
+
+    var pboxes = findPasswordBoxes();
+    for (var x = 0; x < pboxes.length; x++) {
+        var box = {},
+            input = pboxes[x];
+
+        box.passwordinput = input;
+        box.usernameinput = findUsernameBox(input);
+
+        boxlist.push(box);
+    }
+
+    return boxlist;
+}
+
 document.body.style.border = "5px solid green";
-var boxes = findPasswordBoxes();
+var boxes = getPasswordForms();
 for (var x = 0; x < boxes.length; x++) {
-    var input = boxes[x],
-        nparent = input.parentElement,
+    var box = boxes[x],
+        input = box.passwordinput,
+        ubox = box.usernameinput,
+        nparent = box.passwordinput.parentElement,
         link = document.createElement('button'),
-        img = document.createElement('img'),
-        ubox = findUsernameBox(input);
+        img = document.createElement('img');
 
     // Build our link
     img.src = resources.icon;
@@ -66,8 +84,8 @@ port.on("creduri", function(uri) {
 
 port.on("filldata", function(creds){
   for (var x = 0; x < boxes.length; x++) {
-    var pbox = boxes[x],
-        ubox = findUsernameBox(input);
+    var pbox = boxes[x].passwordinput,
+        ubox = boxes[x].usernameinput;
 
     pbox.value = creds.password;
     ubox.value = creds.username;
