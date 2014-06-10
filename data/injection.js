@@ -33,6 +33,22 @@ function findUsernameBox(passwordBox) {
     return null;
 }
 
+function findFirstParentTag(input, tagName) {
+    if (typeof input == "undefined") {
+        return undefined;
+    }
+
+    if (input === null) {
+        return null;
+    }
+
+    if (input.tagName === tagName.toUpperCase()) {
+        return input;
+    }
+
+    return findFirstParentTag(input.parentElement, tagName);
+}
+
 function getPasswordForms() {
     var boxlist = [];
 
@@ -42,6 +58,7 @@ function getPasswordForms() {
             input = pboxes[x];
 
         box.passwordinput = input;
+        box.form = findFirstParentTag(input, "FORM");
         box.usernameinput = findUsernameBox(input);
 
         boxlist.push(box);
@@ -71,6 +88,7 @@ for (var x = 0; x < boxes.length; x++) {
     // Apply debug highlighting
     input.style.border="5px solid red";
     ubox.style.border="5px solid blue";
+    box.form.style.border="5px solid yellow";
 }
 
 function _ratticFillClick(event) {
