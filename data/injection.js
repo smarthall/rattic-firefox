@@ -105,6 +105,25 @@ function getPasswordForms() {
     return boxlist;
 }
 
+function _ratticFillClick(event) {
+    port.emit("filldata", cred_uri);
+    event.preventDefault();
+}
+
+port.on("creduri", function(uri) {
+    cred_uri = uri;
+});
+
+port.on("filldata", function(creds){
+  for (var x = 0; x < boxes.length; x++) {
+    var pbox = boxes[x].passwordinput,
+        ubox = boxes[x].usernameinput;
+
+    pbox.value = creds.password;
+    ubox.value = creds.username;
+  }
+});
+
 document.body.style.border = "5px solid green";
 var boxes = getPasswordForms();
 for (var x = 0; x < boxes.length; x++) {
@@ -128,23 +147,4 @@ for (var x = 0; x < boxes.length; x++) {
     input.style.border="5px solid red";
     ubox.style.border="5px solid blue";
 }
-
-function _ratticFillClick(event) {
-    port.emit("filldata", cred_uri);
-    event.preventDefault();
-}
-
-port.on("creduri", function(uri) {
-    cred_uri = uri;
-});
-
-port.on("filldata", function(creds){
-  for (var x = 0; x < boxes.length; x++) {
-    var pbox = boxes[x].passwordinput,
-        ubox = boxes[x].usernameinput;
-
-    pbox.value = creds.password;
-    ubox.value = creds.username;
-  }
-});
 
