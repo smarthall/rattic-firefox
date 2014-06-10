@@ -33,20 +33,58 @@ function findUsernameBox(passwordBox) {
     return null;
 }
 
-function findFirstParentTag(input, tagName) {
-    if (typeof input == "undefined") {
+function tagSearch(startTag, nextFunc, compFunc, nextArg, compArg) {
+    if (typeof startTag == "undefined") {
         return undefined;
     }
 
-    if (input === null) {
+    if (startTag === null) {
         return null;
     }
 
-    if (input.tagName === tagName.toUpperCase()) {
-        return input;
+    if (compFunc(startTag, compArg)) {
+        return startTag;
     }
 
-    return findFirstParentTag(input.parentElement, tagName);
+    return tagSearch(nextFunc(startTag, nextArg), nextFunc, compFunc, nextArg, compArg);
+
+}
+
+function findFirstParentTag(tag, tagName) {
+    return tagSearch(tag, function(tag, nextArg) {
+        return tag.parentElement;
+    },
+    function(tag, compArg) {
+        return tag.tagName == compArg.toUpperCase();
+    },
+    undefined,
+    tagName);
+}
+
+function findFirstChildTag(tag, tagName) {
+    return tagSearch(tag, function(tag, nextArg) {
+        var next = tag.firstChild;
+        if (typeof next !== "undefined") {
+            return next;
+        }
+
+        next = tag.nextSibling;
+        if (typeof next !== "undefined") {
+            return next;
+        }
+
+        next = tag.parentElement;
+        if (nextArg === next) {
+            return null;
+        }
+
+        return next;
+    },
+    function(tag, compArg) {
+        return tag.tagName == compArg.toUpperCase();
+    },
+    tag,
+    tagName);
 }
 
 function getPasswordForms() {
@@ -86,9 +124,9 @@ for (var x = 0; x < boxes.length; x++) {
     nparent.insertBefore(link, input.nextSibling);
 
     // Apply debug highlighting
+    box.form.style.border="5px solid yellow";
     input.style.border="5px solid red";
     ubox.style.border="5px solid blue";
-    box.form.style.border="5px solid yellow";
 }
 
 function _ratticFillClick(event) {
